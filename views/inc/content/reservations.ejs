@@ -45,7 +45,7 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <label for="inputDate">Data</label>
-                            <input type="text" id="inputDate" name="date" class="form-control" value="<%= body.date %>">
+                            <input type="text" id="inputDate" name="date" class="form-control" value="<% if (typeof body.date === 'string') { %> <%= body.date.split('-').reverse().join('/') %> <% } %>">
                         </div>
                     </div>
                     <div class="row form-group">
