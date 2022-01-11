@@ -11,22 +11,28 @@ var formidable = require('formidable');
 var http = require('http');
 var socket = require('socket.io');
 var path = require('path');
-
-var indexRouter = require('./routes/index');
-var adminRouter = require('./routes/admin');
+var bodyParser = require('body-parser');
 
 var app = express();
 
 var http = http.Server(app);
 var io = socket(http);
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended:false }));
+
 io.on('connection', function(socket) {
   console.log('Novo usuário conectado');
 });
 
+var indexRouter = require('./routes/index')(io);
+var adminRouter = require('./routes/admin')(io);
+
 app.use(function(req, res, next) {
 
   let contentType = req.headers["content-type"];
+
+  // req.body = {};
 
   if ((req.method === 'POST') && (contentType.indexOf('multipart/form-data;') > -1)) {
 
